@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-master
+  template:
+    metadata:
+      labels:
+        app: mysql-master
+    spec:
+      containers:
+      - name: mysql
+        image: nina323/mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "secret"
+        - name: MYSQL_DATABASE
+          value: "db2"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+        args:
+        - --server-id=1
+        - --log-bin=mysql-bin
+        - --binlog-format=ROW
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: mysql-master-pvc

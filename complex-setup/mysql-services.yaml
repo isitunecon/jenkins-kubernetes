@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-master
+spec:
+  selector:
+    app: mysql-master
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-slave
+spec:
+  selector:
+    app: mysql-slave
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: mysql-master
+  ports:
+  - port: 3306
+    name: mysql
+  clusterIP: None
